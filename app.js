@@ -1,11 +1,17 @@
+// Get elements from DOM
 const todoForm = document.getElementById('todo-form');
 const todoInput = document.getElementById('todo-input');
 const todoList = document.getElementById('todo-list');
 
+// create or take task array from localstorage
 const tasks = getTasks();
+// create id variable to keep track of ids of tasks
 let idCounter = 1;
+// display tasks array in case of there is task array in localstorage
 displayTasks();
 
+
+// This function returns local storage tasks array if there is not, returns empty array
 function getTasks() {
   const tasksJson = localStorage.getItem('tasks');
   if(!tasksJson)
@@ -13,12 +19,14 @@ function getTasks() {
   return JSON.parse(tasksJson);
 }
 
+// This function gets tasks array and save it to localstorage
 function saveToLocalStorage(tasks) {
   const tasksJson = JSON.stringify(tasks);
   console.log(tasksJson);
   localStorage.setItem('tasks', tasksJson);
 }
 
+// This class declaration is for defining Tasks with properies and changeStatus method.
 class Task {
   constructor(text){
     this.id = idCounter;
@@ -32,7 +40,7 @@ class Task {
   }
 }
 
-// Listen for submit
+// This event listener listen for add button
 todoForm.addEventListener('submit', (e) => {
   e.preventDefault();
 // Get task from input field
@@ -40,10 +48,12 @@ todoForm.addEventListener('submit', (e) => {
 // Create task object and push to tasks array
   tasks.push(new Task(taskText));
   saveToLocalStorage(tasks);
+// After adding a new Task we should render the task array again
   displayTasks();
   todoInput.value = '';
 })
 
+// This function for rendering every task in the tasks array by creating html structure for each
 function displayTasks() {
 todoList.innerHTML = '';
 // Create <li> element for every object in tasks array
